@@ -1,3 +1,6 @@
+resize();
+wakeServer();
+
 function search() {
 	if (!document.getElementById("searchQ").value == "") {
 		document.getElementById("home").style.display = "none";
@@ -49,6 +52,7 @@ function openSong(songId) {
 	const req = new XMLHttpRequest();
 	req.open("GET", "http://riftify.herokuapp.com/?getSong=" + sId);
 	req.send();
+	document.getElementById("player").pause()
 	req.onload=(e)=>{
 		var d = JSON.parse(req.responseText)
 		var playerSrc = d.formats[0].url;
@@ -58,5 +62,28 @@ function openSong(songId) {
 }
 
 function home() {
-	
+	document.getElementById("home").style.display = "";
+	document.getElementById("results").style.display = "none";
+}
+
+function resize() {
+	var w = window.innerWidth;
+	if (w > 900) {
+		document.getElementById("style").href = "css/main.css";
+	} else {
+		document.getElementById("style").href = "css/mobile.css";
+	}
+}
+
+function wakeServer() {
+	const req = new XMLHttpRequest();
+	req.open("GET", "https://riftify.herokuapp.com/?search=test");
+	req.send();
+	req.onload = function() {
+		if (req.status == 200) {
+			document.getElementById("searchQ").removeAttribute("disabled");
+		} else {
+			console.log("server is down");
+		}
+	}
 }
