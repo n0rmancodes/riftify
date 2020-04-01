@@ -1,9 +1,29 @@
 resize();
 wakeServer();
+sessionStorage.removeItem("requiresRefresh");
+
+if (!localStorage.getItem("forceLower")) {
+	localStorage.setItem("forceLower", "d");
+	document.getElementById("forceLower").value = "d";
+} else {
+	document.getElementById("forceLower").value = localStorage.getItem("forceLower");
+}
+
+if (!localStorage.getItem("hidePlayer")) {
+	localStorage.setItem("hidePlayer", "d");
+	document.getElementById("hidePlayer").value = "d";
+} else {
+	document.getElementById("hidePlayer").value = localStorage.getItem("hidePlayer");
+	if (localStorage.getItem("hidePlayer") == "e") {
+		document.getElementById("hPlayer").style.display = "none";
+	}
+}
 
 function search() {
 	if (!document.getElementById("searchQ").value == "") {
 		document.getElementById("home").style.display = "none";
+		document.getElementById("settingsPage").style.display = "none";
+		document.getElementById("settingsBtn").innerHTML = "settings";
 		const req = new XMLHttpRequest();
 		if (document.getElementById("sType").value == "t") {
 			var s = "https://riftify.herokuapp.com/?search=" + document.getElementById("searchQ").value;
@@ -106,13 +126,21 @@ function openSong(songId) {
 		document.getElementById("cpArtist").innerHTML = d.metadata.artist.name;
 		document.getElementById("cpAlbum").innerHTML = d.metadata.album.title;
 		document.getElementById("cpPic").src = d.metadata.album.cover_big;
-		
+		document.getElementById("hPlayer").style.display = "";
 	}
 }
 
 function home() {
-	document.getElementById("home").style.display = "";
-	document.getElementById("results").style.display = "none";
+	if (!sessionStorage.getItem("requiresRefresh")) {
+		document.getElementById("home").style.display = "";
+		document.getElementById("results").style.display = "none";
+		document.getElementById("settingsPage").style.display = "none";
+		document.getElementById("settingsBtn").onClick = function() {
+			openSettings();
+		}
+	} else {
+		location.reload();
+	}
 }
 
 function resize() {
@@ -121,6 +149,28 @@ function resize() {
 		document.getElementById("style").href = "css/main.css";
 	} else {
 		document.getElementById("style").href = "css/mobile.css";
+	}
+}
+
+function openSettings() {
+	if (document.getElementById("settingsPage").style.display == "") {
+		document.getElementById("settingsBtn").innerHTML = "settings";
+		home();
+	} else {
+		document.getElementById("home").style.display = "none";
+		document.getElementById("results").style.display = "none";
+		document.getElementById("settingsPage").style.display = "";
+		document.getElementById("settingsBtn").innerHTML = "close settings";
+	}
+}
+
+function change(setting) {
+	if (setting == "hidePlayer") {
+		localStorage.setItem("hidePlayer", document.getElementById("hidePlayer").value);
+	} else if (setting == "forceLower") {
+		localStorage.setItem("forceLower", document.getElementById("forceLower").value);
+		sessionStorage.setItem("requiresRefresh", "y");
+		document.getElementById("settingsBtn").innerHTML = "close settings (requires reload)";
 	}
 }
 

@@ -7,7 +7,7 @@
 		<div class="top">
 			<h1 class="topPart" style="cursor:pointer;" onClick="home()">riftify</h1>
 			<input disabled="true" autocomplete="off" placeholder="search for a song" class="topPart" id="searchQ" onInput="search()">
-			<button id="settingsBtn">settings</button>
+			<button id="settingsBtn" onclick="openSettings()">settings</button>
 		</div>
 		<noscript>please enable javascript.</noscript>
 		<div id="results" style="display:none;">
@@ -24,13 +24,37 @@
 		<div id="home">
 			<h2 style="margin-top:15px;">Trending</h2>
 		</div>
-		<div class="footer">
-			<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
-			<div class="meta">
-				<h2 class="rowPart" id="cpTitle">title</h2><br>
-				<h3 class="rowPart" id="cpArtist">artist</h4><br>
-				<h3 class="rowPart" id="cpAlbum">album</h4>
+		<div class="footer" id="hPlayer">
+			<div id="leftFooter">
+				<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
+				<div class="meta">
+					<h2 class="rowPart" id="cpTitle">title</h2><br>
+					<h3 class="rowPart" id="cpArtist">artist</h4><br>
+					<h3 class="rowPart" id="cpAlbum">album</h4>
+				</div><br>
+				<div class="controls">
+					<button onClick="togglePlay()">play</button>
+					
+				</div>
 			</div>
+		</div>
+		<div id="settingsPage" style="display:none;">
+			<p class="info">we use deezer's public API to retrive information on music and to complete searches, and youtube to play the music.</p>
+			<div class="setting">
+				<label class="alt">hide player until something starts playing:</label>
+				<select id="hidePlayer" onInput="change('hidePlayer')">
+					<option value="d">disabled</option>
+					<option value="e">enabled</option>
+				</select>
+			</div>
+			<div class="setting">
+				<label class="alt">force lowercase data on player:</label>
+				<select id="forceLower" onInput="change('forceLower')">
+					<option value="d">disabled</option>
+					<option value="e">enabled</option>
+				</select>
+			</div>
+			<p class="info">settings are automatically saved as soon as you change them, to exit, click settings!</p>
 		</div>
 		<audio id="player"></audio>
 		<link id="style" href="css/main.css" rel="stylesheet">

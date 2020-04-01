@@ -83,3 +83,17 @@ h1,h2,h3,h4 {
 	margin-top:25px;
 	position:fixed;
 }
+
+.controls {
+	position:fixed;
+	margin-left:125px;
+	margin-top:85px;
+}
+
+.info {
+	font-family:Arial;
+}
+
+.alt {
+	font-family:Verdana;
+}
