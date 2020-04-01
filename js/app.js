@@ -121,10 +121,16 @@ function openSong(songId) {
 		var d = JSON.parse(req.responseText)
 		var playerSrc = d.formats[0].url;
 		document.getElementById("player").src = playerSrc;
-		document.getElementById("player").play();
-		document.getElementById("cpTitle").innerHTML = d.metadata.title_short;
-		document.getElementById("cpArtist").innerHTML = d.metadata.artist.name;
-		document.getElementById("cpAlbum").innerHTML = d.metadata.album.title;
+		togglePlay();
+		if (!localStorage.getItem("forceLower") == "d") {
+			document.getElementById("cpTitle").innerHTML = d.metadata.title_short;
+			document.getElementById("cpArtist").innerHTML = d.metadata.artist.name;
+			document.getElementById("cpAlbum").innerHTML = d.metadata.album.title;
+		} else {
+			document.getElementById("cpTitle").innerHTML = d.metadata.title_short.toLowerCase();
+			document.getElementById("cpArtist").innerHTML = d.metadata.artist.name.toLowerCase();
+			document.getElementById("cpAlbum").innerHTML = d.metadata.album.title.toLowerCase();
+		}
 		document.getElementById("cpPic").src = d.metadata.album.cover_big;
 		document.getElementById("hPlayer").style.display = "";
 	}
@@ -184,5 +190,15 @@ function wakeServer() {
 		} else {
 			console.log("server is down");
 		}
+	}
+}
+
+function togglePlay() {
+	if (document.getElementById("pBtn").innerHTML == "play") {
+		document.getElementById("player").play();
+		document.getElementById("pBtn").innerHTML = "pause";
+	} else {
+		document.getElementById("player").pause();
+		document.getElementById("pBtn").innerHTML = "play";
 	}
 }
