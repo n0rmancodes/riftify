@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>riftify</title>
+		<link href="css/main.css" rel="stylesheet">
+	</head>
+	<body onHashChange="action()">
+		<div class="top">
+			<h1 class="topPart" style="cursor:pointer;" onClick="home()">riftify</h1>
+			<input autocomplete="off" placeholder="search for a song" class="topPart" id="searchQ" onInput="search()">
+			<button id="settingsBtn">settings</button>
+		</div>
+		<noscript>please enable javascript.</noscript>
+		<p id="loadingTxt" style="display:none;">loading...</p>
+		<div id="results">
+			
+		</div>
+		<audio id="player" controls></audio>
+		<script src="js/app.js"></script>
+	</body>
+</html>
