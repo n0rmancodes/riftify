@@ -10,14 +10,29 @@
 			<button id="settingsBtn">settings</button>
 		</div>
 		<noscript>please enable javascript.</noscript>
-		<p id="loadingTxt" style="display:none;">loading...</p>
-		<div id="results">
-			
+		<div id="results" style="display:none;">
+			<div style="margin-bottom:10px;">
+				<label>filter results:</label>
+				<select autocomplete="off" id="sType" onInput="search()">
+					<option value="t">track</option>
+					<option value="ar">artist</option>
+					<option value="al">album</option>
+				</select>
+			</div>
+			<div id="resultsC"></div>
 		</div>
 		<div id="home">
-			<h2>Trending</h2>
+			<h2 style="margin-top:15px;">Trending</h2>
 		</div>
-		<audio id="player" controls></audio>
+		<div class="footer">
+			<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
+			<div class="meta">
+				<h2 class="rowPart" id="cpTitle">title</h2><br>
+				<h3 class="rowPart" id="cpArtist">artist</h4><br>
+				<h3 class="rowPart" id="cpAlbum">album</h4>
+			</div>
+		</div>
+		<audio id="player"></audio>
 		<link id="style" href="css/main.css" rel="stylesheet">
 		<script src="js/app.js"></script>
 	</body>
