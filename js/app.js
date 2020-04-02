@@ -40,11 +40,11 @@ function search() {
 		document.getElementById("settingsBtn").innerHTML = "settings";
 		const req = new XMLHttpRequest();
 		if (document.getElementById("sType").value == "t") {
-			var s = "https://riftify.herokuapp.com/?search=" + document.getElementById("searchQ").value;
+			var s = "https://riftifyapi.herokuapp.com/?search=" + document.getElementById("searchQ").value;
 		} else if (document.getElementById("sType").value == "ar") {
-			var s = "https://riftify.herokuapp.com/?search=" + document.getElementById("searchQ").value + "&type=artist";
+			var s = "https://riftifyapi.herokuapp.com/?search=" + document.getElementById("searchQ").value + "&type=artist";
 		} else if (document.getElementById("sType").value == "al") {
-			var s = "https://riftify.herokuapp.com/?search=" + document.getElementById("searchQ").value + "&type=album";
+			var s = "https://riftifyapi.herokuapp.com/?search=" + document.getElementById("searchQ").value + "&type=album";
 		}
 		req.open("GET", s);
 		req.send();
@@ -132,7 +132,7 @@ function openSong(songId, fSrc) {
 		var sId = parseFloat(songId);
 	}
 	const req = new XMLHttpRequest();
-	req.open("GET", "https://riftify.herokuapp.com/?getSong=" + sId);
+	req.open("GET", "https://riftifyapi.herokuapp.com/?getSong=" + sId);
 	req.send();
 	if (document.getElementById("pBtn").innerHTML == "pause") {
 		togglePlay();
@@ -207,7 +207,7 @@ function change(setting) {
 
 function wakeServer() {
 	const req = new XMLHttpRequest();
-	req.open("GET", "https://riftify.herokuapp.com/?search=test");
+	req.open("GET", "https://riftifyapi.herokuapp.com/?search=test");
 	req.send();
 	req.onload = function() {
 		if (req.status == 200) {
