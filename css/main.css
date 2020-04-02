@@ -97,3 +97,44 @@ h1,h2,h3,h4 {
 .alt {
 	font-family:Verdana;
 }
+
+#leftFooter {
+	max-width:45%;
+	float:left;
+	min-height:100%;
+}
+
+#rightFooter {
+	float:left;
+	text-align:right;
+	min-width:50%;
+	min-height:100%;
+	margin-left:50%;
+}
+
+.clickable {
+	cursor:pointer;
+}
+
+.clickable:hover {
+	text-decoration:underline;
+}
+
+.controlsBtn {
+	background:#282828;
+	border:3px white;
+	color:white;
+	height:20px;
+	width:auto;
+}
+
+.activeBtn {
+	background-color:#777;
+}
+
+.pBar {
+	background:#848484;
+	width:60%;
+	height:20px;
+	float:left;
+}

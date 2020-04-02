@@ -2,6 +2,20 @@ resize();
 wakeServer();
 sessionStorage.removeItem("requiresRefresh");
 
+setInterval(function() {
+	if (document.getElementById("player").src && !document.getElementById("player").ended) {
+		sessionStorage.setItem("curPlayProg", document.getElementById("player").currentTime);
+		console.log("saved progress point: " + document.getElementById("player").currentTime);
+	}
+}, 10000)
+
+if (sessionStorage.getItem("curPlayId")) {
+	openSong(sessionStorage.getItem("curPlayId"), "onLoad");
+	if (sessionStorage.getItem("curPlayProg")) {
+		document.getElementById("player").currentTime = sessionStorage.getItem("curPlayProg");
+	}
+}	
+
 if (!localStorage.getItem("forceLower")) {
 	localStorage.setItem("forceLower", "d");
 	document.getElementById("forceLower").value = "d";
@@ -45,7 +59,7 @@ function search() {
 				song.style = "display:block;"
 				if (d.data[c].type == "track") {
 					song.onclick = function () {
-						openSong(this.id);
+						openSong(this.id, "search");
 					}
 					document.getElementById("resultsC").appendChild(song);
 					var cover = document.createElement("IMG");
@@ -111,18 +125,29 @@ function search() {
 	}
 }
 
-function openSong(songId) {
-	var sId = parseInt(songId.substring(2));
+function openSong(songId, fSrc) {
+	if (fSrc && fSrc == "search") {
+		var sId = parseInt(songId.substring(2));
+	} else {
+		var sId = parseFloat(songId);
+	}
 	const req = new XMLHttpRequest();
-	req.open("GET", "http://riftify.herokuapp.com/?getSong=" + sId);
+	req.open("GET", "https://riftify.herokuapp.com/?getSong=" + sId);
 	req.send();
-	document.getElementById("player").pause()
+	if (document.getElementById("pBtn").innerHTML == "pause") {
+		togglePlay();
+	}
+	document.getElementById("pBtn").setAttribute("disabled", "true");
 	req.onload=(e)=>{
+		sessionStorage.setItem("curPlayId", sId)
 		var d = JSON.parse(req.responseText)
 		var playerSrc = d.formats[0].url;
 		document.getElementById("player").src = playerSrc;
-		togglePlay();
-		if (!localStorage.getItem("forceLower") == "d") {
+		if (!fSrc == "onLoad") {
+			togglePlay();
+		}
+		document.getElementById("pBtn").removeAttribute("disabled");
+		if (localStorage.getItem("forceLower") == "d") {
 			document.getElementById("cpTitle").innerHTML = d.metadata.title_short;
 			document.getElementById("cpArtist").innerHTML = d.metadata.artist.name;
 			document.getElementById("cpAlbum").innerHTML = d.metadata.album.title;
@@ -200,5 +225,15 @@ function togglePlay() {
 	} else {
 		document.getElementById("player").pause();
 		document.getElementById("pBtn").innerHTML = "play";
+	}
+}
+
+function toggleLoop() {
+	if (document.getElementById("loopBtn").classList.contains("activeBtn")) {
+		document.getElementById("player").removeAttribute("loop");
+		document.getElementById("loopBtn").classList.remove("activeBtn");
+	} else {
+		document.getElementById("player").setAttribute("loop", "true");
+		document.getElementById("loopBtn").classList.add("activeBtn");
 	}
 }

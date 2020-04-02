@@ -21,23 +21,6 @@
 			</div>
 			<div id="resultsC"></div>
 		</div>
-		<div id="home">
-			<h2 style="margin-top:15px;">Trending</h2>
-		</div>
-		<div class="footer" id="hPlayer">
-			<div id="leftFooter">
-				<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
-				<div class="meta">
-					<h2 class="rowPart" id="cpTitle">title</h2><br>
-					<h3 class="rowPart" id="cpArtist">artist</h4><br>
-					<h3 class="rowPart" id="cpAlbum">album</h4>
-				</div><br>
-				<div class="controls">
-					<button onClick="togglePlay()" id="pBtn">play</button>
-					
-				</div>
-			</div>
-		</div>
 		<div id="settingsPage" style="display:none;">
 			<p class="info">we use deezer's public API to retrive information on music and to complete searches, and youtube to play the music.</p>
 			<div class="setting">
@@ -55,6 +38,29 @@
 				</select>
 			</div>
 			<p class="info">settings are automatically saved as soon as you change them, to exit, click settings!</p>
+		</div>
+		<div id="home">
+			<h2 style="margin-top:15px;">trending</h2>
+		</div>
+		<div id="artistPage" style="display:none;">
+			
+		</div>
+		<div class="footer" id="hPlayer">
+			<div id="leftFooter">
+				<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
+				<div class="meta">
+					<h2 class="rowPart clickable" id="cpTitle">title</h2><br>
+					<h3 class="rowPart clickable" id="cpArtist">artist</h4><br>
+					<h3 class="rowPart clickable" id="cpAlbum">album</h4>
+				</div><br>
+				<div class="controls">
+					<button class="controlsBtn" onClick="togglePlay()" id="pBtn">play</button>
+					<button class="controlsBtn" onClick="toggleLoop()" id="loopBtn">loop</button>
+				</div>
+			</div>
+			<div id="rightFooter">
+				<div class="pBar"></div>
+			</div>
 		</div>
 		<audio id="player"></audio>
 		<link id="style" href="css/main.css" rel="stylesheet">
