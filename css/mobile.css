@@ -110,3 +110,65 @@ h1,h2,h3,h4 {
 .alt {
 	font-family:Verdana;
 }
+
+#leftFooter {
+	max-width:45%;
+	float:left;
+	min-height:100%;
+}
+
+#rightFooter {
+	float:left;
+	text-align:right;
+	min-width:50%;
+	min-height:100%;
+	margin-left:50%;
+}
+
+.clickable {
+	cursor:pointer;
+}
+
+.clickable:hover {
+	text-decoration:underline;
+}
+
+.controlsBtn {
+	background:#282828;
+	border:3px white;
+	color:white;
+	height:20px;
+	width:auto;
+}
+
+.activeBtn {
+	background-color:#777;
+}
+
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: rgba(15, 15, 15, 0.7);
+	z-index: 10;
+}
+
+.overlayContent {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding:15px;
+}
+
+#ytPlayer {
+	border:0;
+	width:800px;
+	height:455px;
+}
+
+.center {
+	text-align:center;
+}

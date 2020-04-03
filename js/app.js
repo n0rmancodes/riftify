@@ -9,6 +9,10 @@ setInterval(function() {
 	}
 }, 10000)
 
+document.getElementById('player').addEventListener('ended', function() {
+	togglePlay("pause");
+})
+
 if (sessionStorage.getItem("curPlayId")) {
 	openSong(sessionStorage.getItem("curPlayId"), "onLoad");
 	if (sessionStorage.getItem("curPlayProg")) {
@@ -134,20 +138,19 @@ function openSong(songId, fSrc) {
 	const req = new XMLHttpRequest();
 	req.open("GET", "https://riftifyapi.herokuapp.com/?getSong=" + sId);
 	req.send();
-	if (document.getElementById("pBtn").innerHTML == "pause") {
-		togglePlay();
-	}
-	document.getElementById("pBtn").setAttribute("disabled", "true");
+	togglePlay("pause");
 	req.onload=(e)=>{
 		sessionStorage.setItem("curPlayId", sId)
 		var d = JSON.parse(req.responseText)
 		var playerSrc = d.formats[0].url;
 		document.getElementById("player").src = playerSrc;
-		if (!fSrc == "onLoad") {
-			togglePlay();
+		if (fSrc == "onLoad") {
+			togglePlay("pause");
+		} else {
+			togglePlay("play");
 		}
 		document.getElementById("pBtn").removeAttribute("disabled");
-		if (localStorage.getItem("forceLower") == "d") {
+		if (!localStorage.getItem("forceLower") == "d") {
 			document.getElementById("cpTitle").innerHTML = d.metadata.title_short;
 			document.getElementById("cpArtist").innerHTML = d.metadata.artist.name;
 			document.getElementById("cpAlbum").innerHTML = d.metadata.album.title;
@@ -156,6 +159,8 @@ function openSong(songId, fSrc) {
 			document.getElementById("cpArtist").innerHTML = d.metadata.artist.name.toLowerCase();
 			document.getElementById("cpAlbum").innerHTML = d.metadata.album.title.toLowerCase();
 		}
+		sessionStorage.setItem("embedId", d.yId);
+		document.title = d.metadata.title_short + " - " + d.metadata.artist.name + " | riftify";
 		document.getElementById("cpPic").src = d.metadata.album.cover_big;
 		document.getElementById("hPlayer").style.display = "";
 	}
@@ -218,13 +223,23 @@ function wakeServer() {
 	}
 }
 
-function togglePlay() {
-	if (document.getElementById("pBtn").innerHTML == "play") {
-		document.getElementById("player").play();
-		document.getElementById("pBtn").innerHTML = "pause";
-	} else {
-		document.getElementById("player").pause();
-		document.getElementById("pBtn").innerHTML = "play";
+function togglePlay(frc) {
+	if (!frc) {
+		if (document.getElementById("pBtn").innerHTML == "play") {
+			document.getElementById("player").play();
+			document.getElementById("pBtn").innerHTML = "pause";
+		} else {
+			document.getElementById("player").pause();
+			document.getElementById("pBtn").innerHTML = "play";
+		}
+	} else if (frc) {
+		if (frc == "play") {
+			document.getElementById("player").play();
+			document.getElementById("pBtn").innerHTML = "pause";
+		} else {
+			document.getElementById("player").pause();
+			document.getElementById("pBtn").innerHTML = "play";
+		}
 	}
 }
 
@@ -235,5 +250,36 @@ function toggleLoop() {
 	} else {
 		document.getElementById("player").setAttribute("loop", "true");
 		document.getElementById("loopBtn").classList.add("activeBtn");
+	}
+}
+
+function embedVideo() {
+	if (sessionStorage.getItem("embedId")) {
+		togglePlay("pause");
+		document.getElementById("embedOverlay").style.display = "";
+		if (document.getElementById("loopBtn").classList.contains("activeBtn")) {
+			if (sessionStorage.getItem("curPlayProg")) {
+				document.getElementById("ytPlayer").src = "https://www.youtube-nocookie.com/embed/" + sessionStorage.getItem("embedId") + "/?autoplay=true&loop=true&start=" + Math.round(parseInt(sessionStorage.getItem("curPlayProg")));
+			} else {
+				document.getElementById("ytPlayer").src = "https://www.youtube-nocookie.com/embed/" + sessionStorage.getItem("embedId") + "/?autoplay=true&loop=true";
+			}
+		} else {
+			if (sessionStorage.getItem("curPlayProg")) {
+				document.getElementById("ytPlayer").src = "https://www.youtube-nocookie.com/embed/" + sessionStorage.getItem("embedId") + "/?autoplay=true&start=" + Math.round(parseInt(sessionStorage.getItem("curPlayProg")));
+			} else {
+				document.getElementById("ytPlayer").src = "https://www.youtube-nocookie.com/embed/" + sessionStorage.getItem("embedId") + "/?autoplay=true";
+			}
+		}
+	} else {
+		return;
+	}
+}
+
+function hideOverlay(ol) {
+	if (!ol) {
+		return;
+	} else if (ol == 'embed') {
+		document.getElementById("ytPlayer").src = "about:blank";
+		document.getElementById("embedOverlay").style.display = "none";
 	}
 }

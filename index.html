@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>riftify</title>
+		<link href="img/rift.ico" rel="icon">
 	</head>
 	<body onHashChange="action()" onResize="resize()">
 		<div class="top">
@@ -45,21 +46,25 @@
 		<div id="artistPage" style="display:none;">
 			
 		</div>
+		<div class="overlay" id="embedOverlay" style="display:none;" onClick="hideOverlay('embed')">
+			<div class="overlayContent">
+				<iframe id="ytPlayer"></iframe>
+				<p class="alt center">click outside the player to close.</p>
+			</div>
+		</div>
 		<div class="footer" id="hPlayer">
 			<div id="leftFooter">
 				<img src="img/placeholder.jpg" id="cpPic" class="playerPic rowPart">
 				<div class="meta">
 					<h2 class="rowPart clickable" id="cpTitle">title</h2><br>
-					<h3 class="rowPart clickable" id="cpArtist">artist</h4><br>
-					<h3 class="rowPart clickable" id="cpAlbum">album</h4>
+					<h3 class="rowPart clickable" id="cpArtist">artist</h3><br><br>
+					<h4 class="rowPart clickable" id="cpAlbum">album</h4>
 				</div><br>
 				<div class="controls">
 					<button class="controlsBtn" onClick="togglePlay()" id="pBtn">play</button>
 					<button class="controlsBtn" onClick="toggleLoop()" id="loopBtn">loop</button>
+					<button class="controlsBtn" onClick="embedVideo()" id="watchBtn">watch the video</button>
 				</div>
-			</div>
-			<div id="rightFooter">
-				<div class="pBar"></div>
 			</div>
 		</div>
 		<audio id="player"></audio>
