@@ -142,8 +142,23 @@ function openSong(songId, fSrc) {
 	req.onload=(e)=>{
 		sessionStorage.setItem("curPlayId", sId)
 		var d = JSON.parse(req.responseText)
-		var playerSrc = d.formats[0].url;
-		document.getElementById("player").src = playerSrc;
+		if (!d.formats.url) {
+			if (d.formats[0].isDashMPD == true) {
+				req.open("GET", "https://coorsproxyunlimited.herokuapp.com/" + d.formats[0].url);
+				req.send();
+				req.onload=(e)=>{
+					var rsp = req.responseText
+					var playerSrc1 = rsp.split("<BaseURL>")[1]
+					var playerSrc = playerSrc1.split("/</BaseURL><SegmentList><Initialization sourceURL")[0];
+					document.getElementById("player").src = playerSrc;
+				}
+			} else {
+				var playerSrc = d.formats[0].url;
+				document.getElementById("player").src = playerSrc;
+			}
+		} else {
+			console.log("fuck")
+		}
 		if (fSrc == "onLoad") {
 			togglePlay("pause");
 		} else {
@@ -164,6 +179,10 @@ function openSong(songId, fSrc) {
 		document.getElementById("cpPic").src = d.metadata.album.cover_big;
 		document.getElementById("hPlayer").style.display = "";
 	}
+}
+
+function getDash(parentString, substring) {
+    return parentString.substring(parentString.indexOf(substring) + substring.length)
 }
 
 function home() {
